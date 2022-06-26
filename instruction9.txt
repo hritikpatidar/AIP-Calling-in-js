@@ -1,0 +1,3 @@
+Client ----->  JSON   -----> Sever
+
+How we can convert a string boolean value in real boolean value

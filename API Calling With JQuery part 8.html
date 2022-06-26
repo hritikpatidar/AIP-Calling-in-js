@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API Calling with jQuery</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    </head>
+    <body>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">BooK View</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                        <li class="list-group-item">A fourth item</li>
+                        <li class="list-group-item">And a fifth one</li>
+                        <li class="list-group-item">And a sixth one</li>
+                      </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Book Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Title</label>
+                          <input type="text" class="form-control a_title" id="exampleInputEmail1" aria-describedby="emailHelp">
+                          <div id="emailHelp" class="form-text"></div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Description</label>
+                          <textarea class="form-control a_description" rows="10"></textarea>
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Ecerpt</label>
+                          <textarea class="form-control a_excerpt" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Page Count</label>
+                            <input type="number" class="form-control a_pageCount" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text"></div>
+                          </div>
+                        <button type="submit" class="btn btn-primary a_update">Update</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Update changes</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button class="btn btn-success a_getdata">Get </button>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Excerpt</th>
+                <th scope="col">pageCount</th>
+                <th scope="col">publishDate</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+          </table>
+
+        <script>
+            var bookid ='';
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "10000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            var myurlobj = {
+                url:'https://fakerestapi.azurewebsites.net',
+                type:'GET'
+            };
+            document.querySelector('.a_getdata').addEventListener('click',function(){
+                //alert('okokok');
+                //swal("Good job!", "You clicked the button!", "success");
+                
+                //toastr.success('Are you the 6 fingered man?');
+                $.ajax({
+                    //1. P:V,
+                    //2. method:function(){}
+                    ...myurlobj,// ... spread Operator
+                    url:myurlobj.url+'/api/v1/Books', //Prev Value reuse and modify
+
+                    beforeSend:function(){
+
+                    },
+                    success:function(result,status,xhr){
+                        console.log(result);
+                        var tr = ``;
+                        result.forEach(element => {
+                            //console.log(element);
+                            /*
+                                description: "Facilisis et takimata dolores tempor ipsum volutpat stet amet kasd. Elitr ipsum volutpat dolor feugiat eleifend at nonumy elitr dolore eos sea. Nisl lorem consetetur diam eirmod diam exerci takimata kasd iriure vero at et magna. Dolor lorem sadipscing vero dolore eirmod eu vel diam invidunt accumsan nulla ea molestie eum feugiat. Dolore et erat eu lorem iriure et elitr accusam takimata delenit cum hendrerit euismod eos. Accumsan elitr elitr dolore ipsum ipsum dolor. Nonumy lorem lorem consequat. Consetetur assum delenit rebum ea facilisis lorem. Molestie sadipscing eirmod sit dolore ut augue duo sed. Eu clita kasd vero kasd dignissim elitr elitr rebum feugait.\n"
+                                excerpt: "Et sed sit iriure sed odio sit possim diam clita justo ipsum accusam praesent. Vero et eos dolore eos eirmod vero eum. Ut et hendrerit consetetur accusam consetetur eirmod doming gubergren dolores gubergren dolor sanctus sanctus aliquyam elitr. Et accumsan enim dolores augue ipsum sed dolore justo sadipscing facer gubergren ea lorem at et ut eros no. Sanctus praesent zzril. In ea et iusto sed dolores euismod exerci in sanctus duo. Voluptua kasd et amet option stet ipsum dolores in. Dolor ut ut dolore et nulla eirmod rebum clita ipsum no accusam. Ipsum consequat hendrerit est amet amet erat vulputate nulla dolore et. Eos assum elitr ipsum sadipscing rebum ipsum dignissim sanctus rebum. Eirmod erat amet ipsum eos vero amet ipsum feugait velit vel takimata. Gubergren sea esse ea stet lorem sanctus ut consetetur nostrud ipsum elitr aliquyam illum. Takimata at molestie. Ut aliquyam dolor doming lorem esse vero no facilisis ea dolores amet sanctus dolore.\nLabore erat eum sanctus takimata vel sit sadipscing qui ipsum takimata eum elitr voluptua. Aliquyam sanctus eos laoreet. Laoreet feugiat dolor duo sea diam consectetuer lorem diam nulla at gubergren at et ut. Ipsum at dolor amet erat sea sed takimata eu magna et ipsum vero.\nAt tincidunt wisi vel labore ut duis. Dolores tempor dolor et sit eos sit duo diam elitr consectetuer dolore. Dolor et consetetur dolor est tempor et facilisis vero nibh. Diam erat sit dolores vero enim eum no lorem kasd aliquyam clita diam iriure nonummy ut eirmod adipiscing. Kasd erat lorem labore eos diam tincidunt erat ut eos est sed in nibh erat voluptua. Voluptua sed amet rebum sit vero kasd ut et feugait duo no gubergren dolor. Amet lorem wisi sadipscing invidunt nulla sed kasd lorem labore lorem gubergren. Et et est ipsum wisi rebum nihil est vulputate sanctus ea nonumy sadipscing. Sit minim takimata qui sanctus aliquyam. Dolor dolore takimata invidunt diam dignissim sed duo erat et aliquyam ad. Dolore ut eirmod accusam rebum nulla ut lorem facilisis dolor qui est. Stet diam no. Amet sadipscing duis dolore vero nonummy commodo clita accumsan in et diam. Rebum invidunt consetetur nulla illum dolores kasd tempor at laoreet facilisi clita esse hendrerit nonumy. Ipsum sanctus sit. Dolores vero tempor rebum commodo no eirmod. No aliquam et ipsum amet labore aliquip. Iriure magna rebum no ipsum at aliquyam dolor takimata. Nisl ipsum no dolore ut amet dolor eleifend at.\nEu dolore nibh sed erat sed ex tempor et duis lorem takimata possim invidunt dolor in dolor. In nostrud ut takimata. Et ut lorem diam amet. Ex ut in kasd justo dolores amet nisl ad et veniam eros. Cum diam amet quis et amet sed no erat minim. Facilisis dolor laoreet voluptua dolor sadipscing voluptua sit. Dolor accusam diam exerci ea et ut clita. At blandit stet sit nonumy et dolore tincidunt diam facilisis dolore est eum et lorem sit et eos. Consetetur qui ut consetetur dolor lorem. Sed wisi sanctus commodo adipiscing gubergren est eirmod cum stet qui diam. Amet eos sit consequat exerci ea duo ut amet nonumy luptatum et dolor eos et invidunt stet vero. Ipsum at dolore lorem duo. Amet et lorem ut.\nVel assum ea eum possim elitr dolor dolor sed. Consequat dolor consetetur diam minim amet tempor congue accusam gubergren diam vel erat et vel. Sed consetetur feugiat rebum duo et et labore et no et vel consequat consetetur erat. Accusam imperdiet nonumy hendrerit diam sanctus amet sadipscing duo et. Ipsum molestie et nulla feugiat ipsum amet rebum takimata magna rebum ut zzril sed facilisis qui. Qui clita diam diam autem praesent stet sit erat praesent ut dolores praesent. Facilisis et tempor erat duis aliquyam ipsum tempor elitr suscipit magna. Accusam sea amet sea amet feugait mazim no tation takimata. Sed lobortis dolores kasd takimata magna justo no sit. Dolor ut invidunt diam qui amet takimata nonummy aliquip accusam at sit et nihil.\n"
+                                id: 180
+                                pageCount: 18000
+                                publishDate: "2021-05-21T04:05:12.3912894+00:00"
+                                title: "Book 180"
+                            */
+                            tr = tr + `<tr>
+                                            <td>`+element.id+`</td>
+                                            <td>`+element.title+`</td>
+                                            <td>`+element.description+`</td>
+                                            <td>`+element.excerpt+`</td>
+                                            <td>`+element.pageCount+`</td>
+                                            <td>`+element.publishDate+`</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-success a_viewbtn" data-bs-toggle="modal" data-bs-target="#exampleModal">View</button>
+                                                <button class="btn btn-sm btn-info a_editbtn" data-bs-toggle="modal" data-bs-target="#exampleModal2">EDIT</button>
+                                                <button class="btn btn-sm btn-danger a_delbtn">Delete</button>
+                                            </td>
+                                        </tr>`;
+                        });
+                        //console.log(tr);
+                        document.querySelector('table > tbody').innerHTML = tr;
+                    }, 
+                    error:function(){
+
+                    }, 
+                    complete:function(){}
+                });
+            });
+
+
+            // This teqniuque is For Dynamic generated element
+            document.addEventListener('click',function(e){ // e = event
+                console.log(e.target.classList.contains('a_editbtn'));
+                if(e.target.classList.contains('a_editbtn')){
+                    //Edit 
+                    bookid = e.target.closest('tr').querySelector('td:first-child').innerHTML;
+                    let title = e.target.closest('tr').querySelector('td:nth-child(2)').innerHTML;
+                    let description = e.target.closest('tr').querySelector('td:nth-child(3)').innerHTML;
+                    let excerpt = e.target.closest('tr').querySelector('td:nth-child(4)').innerHTML;
+                    let pageCount = e.target.closest('tr').querySelector('td:nth-child(5)').innerHTML;
+                    console.log(bookid);
+                    console.log(title);
+                    console.log(description);
+                    console.log(excerpt);
+                    console.log(pageCount);
+
+                    document.querySelector('.a_title').value = title; // SET
+                    document.querySelector('.a_description').value = description;
+                    document.querySelector('.a_excerpt').value = excerpt;
+                    document.querySelector('.a_pageCount').value = pageCount;
+
+                    //Finally make a put request to update the record/Db Record/DB Row
+                }
+            })
+
+            //This tecqniue is for non dynamic element
+            document.querySelector('.a_update').addEventListener('click',function(e){
+                e.preventDefault();
+                //alert('OKOKOKOKOKO');
+                //Now call the api request
+
+                //Before calling the api request we must collect all the updated information
+                console.log(document.querySelector('.a_title').value); // Get
+                let title = document.querySelector('.a_title').value ; // SET
+                let description = document.querySelector('.a_description').value ;
+                let excerpt = document.querySelector('.a_excerpt').value ;
+                let pageCount = document.querySelector('.a_pageCount').value ;
+
+                var mydata = {
+                            "id": bookid,
+                            "title": title,
+                            "description": description,
+                            "pageCount": pageCount,
+                            "excerpt": excerpt,
+                            "publishDate": "2021-11-17T04:11:02.011Z"
+                     }
+                //Finally make the put request api call
+                $.ajax({
+                    ...myurlobj,
+                    url:myurlobj.url+'/api/v1/Books/'+bookid,
+                    type:"PUT",//Completely overwriting the previous value,
+                    data: JSON.stringify(mydata),
+                    dataType: "json",
+                    contentType: "application/json",
+                    success:function(result,status,xhr){
+                        swal("Good job!", "Book information Updated Succefully!", "success");
+                    }
+                });
+                //alert('okok');
+            });
+        </script>
+    </body>
+</html> 

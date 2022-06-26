@@ -1,0 +1,4 @@
+https://www.w3schools.com/xml/ajax_xmlhttprequest_response.asp
+https://fakerestapi.azurewebsites.net/index.html
+
+ (4*5)+(3*4)

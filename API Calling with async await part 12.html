@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    </head>
+    <body>
+        
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+            var baseURL = 'https://fakerestapi.azurewebsites.net';
+
+
+            //Asyncronous = Async
+
+            //1. Function Defination
+
+            //Async Functions
+
+            function callApi(){
+                //let classObject = new ClassName();
+
+                // return new ClassName();
+                return new Promise(function(resolve,reject){
+                    //Producing Code {The Code which may take time}
+
+                    //1. XMLHttpRequest Class
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('GET',`${baseURL}/api/v1/Users`);
+                    xhr.send();
+                    xhr.onreadystatechange = function(){
+                        //readyState is a xhr property
+                        //status is also an xhr property
+
+                        // 8*4+5*2
+                        // Precedence of Operator  () parenthesis
+
+                        if( (xhr.readyState == 4) && (xhr.status == 200) ){
+                            //You can recieve the data from server
+                            resolve( JSON.parse(xhr.responseText)) ;
+                        }
+                        if(xhr.status != 200){
+                            reject('error');
+                        }
+
+                    }  // onevent, onreadystatechange
+
+
+                });
+            }
+
+            async function getMyUser(){
+                //async function always contain await keyword
+                //await PromiseObject
+
+                //You have to use await keyword inside the async function
+
+                //await PromiseObject
+                let data = await callApi();
+                console.log(data);
+
+            }
+
+            //2. Function Calling
+            getMyUser();
+            //po.then().then().then().catch().finally();
+
+        </script>
+    </body>
+</html>
